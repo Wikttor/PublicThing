@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
     public float i_movementSpeed = 1000;
     [Tooltip("radius; unit is equal to distance between adjecent navpoints")] public int i_size;
     public float i_pursuingDistance = 1f;
+    public int i_searchDistance = 80;
 
 
     public List<INavPoint> path;
@@ -65,15 +66,37 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         }
         if (isAIEnabled && WithinSightOfPlayer())
         {
-            path = BetterNavNet.FindPath(nearestNavPoint, PlayerMovementAndRotation.nearestNavPoint, i_size);
-            pathElementIndex = 0;
-            if (path != null)
-            {
-                LineRenderingThing.staticRef.DrawPath(path);
-                behaviourState = EnemyBehaviourState.Pursue;
-            }
+            //AIStartPursuing();
+
+            AIStartHiding();
         }
         nextAItime += Random.Range( 1f - i_AICheckDelayDeviationAmount, 1 + i_AICheckDelayDeviationAmount) * i_AICheckDelay;
+    }
+
+
+    private void AIStartHiding()
+    {
+        NavPointV2 hideoutLocation = BetterNavNet.FindNearestWayPointOutOfSight(nearestNavPoint, i_size, i_searchDistance, PlayerMovementAndRotation.staticRef.transform.position);
+        if (hideoutLocation != null)
+        {
+            path = BetterNavNet.FindPath(nearestNavPoint, hideoutLocation, i_size);
+        }
+        pathElementIndex = 0;
+        if (path != null)
+        {
+            LineRenderingThing.staticRef.DrawPath(path);
+            behaviourState = EnemyBehaviourState.Pursue;//more like following the path, not pursuing
+        }
+    }
+    private void AIStartPursuing()
+    {
+        path = BetterNavNet.FindPath(nearestNavPoint, PlayerMovementAndRotation.nearestNavPoint, i_size);
+        pathElementIndex = 0;
+        if (path != null)
+        {
+            LineRenderingThing.staticRef.DrawPath(path);
+            behaviourState = EnemyBehaviourState.Pursue;
+        }
     }
     private void AIPursue()
     {

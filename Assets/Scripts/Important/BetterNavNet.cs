@@ -311,10 +311,35 @@ public class BetterNavNet : MonoBehaviour, INavNet
         }
         return arg_oldNearestNavPoint;
     }
-    public static NavPointV2 FindNearestWayPointOutOfSight(NavPointV2 arg_location, float arg_size, float arg_distance)
+    public static NavPointV2 FindNearestWayPointOutOfSight(NavPointV2 arg_location, int arg_size, float arg_searchDistance, Vector3 arg_observerPosition)
     {
         NavPointV2 result = null;
-
+        //arg_location = FindNearestNavPointWithEnoughRoomAround(arg_location, arg_size);
+        Dictionary<NavPointV2, int> dict = new Dictionary<NavPointV2, int>();
+        List<NavPointV2> list = new List<NavPointV2>();
+        dict.Add(arg_location, 0);
+        list.Add(arg_location);
+        for ( int i = 0;
+            i < list.Count && result == null &&  dict[list[i]] < arg_searchDistance;
+            i++)
+        {
+            foreach (NavPointV2 neighbour in list[i].neighbours)
+            {
+                if (neighbour != null && neighbour.obstacleProximity >= arg_size && list.Contains(neighbour) == false )
+                {
+                    if (Physics.Raycast(neighbour.position, arg_observerPosition - neighbour.position, (arg_observerPosition - neighbour.position).magnitude, (int)Layers.Obstacles) )
+                    {
+                        Debug.Log("TUTAJTUTAJTUTAJTUTAJ");
+                        result = neighbour;
+                    }
+                    else
+                    {
+                        list.Add(neighbour);
+                        dict.Add(neighbour, dict[list[i]] + 1);
+                    }
+                }
+            }
+        }
         return result;
     }
 }
