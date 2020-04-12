@@ -36,8 +36,8 @@ public class BetterNavNet : MonoBehaviour, INavNet
     }
     public static List<INavPoint> FindPath(NavPointV2 arg_start, NavPointV2 arg_destination, int arg_pathWidth)
     {
-        arg_start = FindNearestLegitimateNavPoint(arg_start, arg_pathWidth);
-        arg_destination = FindNearestLegitimateNavPoint(arg_destination, arg_pathWidth);
+        arg_start = FindNearestNavPointWithEnoughRoomAround(arg_start, arg_pathWidth);
+        arg_destination = FindNearestNavPointWithEnoughRoomAround(arg_destination, arg_pathWidth);
         int processedNavPointID = 0;
         NavPointV2 nPoint;
         bool isPathFound = false;
@@ -53,7 +53,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
 
         pathDictionaryValueIsOrigin = new Dictionary<NavPointV2, NavPointV2>();
         List<NavPointV2> spottedNavPoints = new List<NavPointV2>();
-        //List<INavPoint> path = new List<INavPoint>();
         if (arg_start != null)
         {
             pathDictionaryValueIsOrigin.Add(arg_start as NavPointV2, arg_start as NavPointV2);
@@ -93,13 +92,11 @@ public class BetterNavNet : MonoBehaviour, INavNet
         }
         else
         {
-            //Debug.Log("no path found; Start is " + arg_start.GetPosition() + " Destination is " + arg_destination.GetPosition() );
-            Debug.Log("tutaj będzie buba " + ((NavPointV2)arg_destination).distancetoNearestObject);
+            Debug.Log("no path found; Start is " + arg_start.GetPosition() + " Destination is " + arg_destination.GetPosition() );
         }
         return null;
     }
-
-    private static NavPointV2 FindNearestLegitimateNavPoint(NavPointV2 arg_npoint, int arg_width)
+    private static NavPointV2 FindNearestNavPointWithEnoughRoomAround(NavPointV2 arg_npoint, int arg_width)
     {
         bool foundLegitimateNavPoint = false;
         List<NavPointV2> nPointList = new List<NavPointV2>();
@@ -126,7 +123,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
         }
         return arg_npoint;
     }
-
     private static List<INavPoint> PreparePathToReturn(NavPointV2 arg_start, NavPointV2 arg_destination)
     {
         bool pathReadyToReturn = false;
@@ -149,37 +145,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
         }
         r_path.Reverse();
         return r_path;
-    }
-
-    private bool EnoughRoomToGoThrough(NavPointV2 navPoint, float pathseekerSize)
-    {
-        if (pathseekerSize == 0)
-        {
-            return true;
-        }
-        bool result = true;
-        if (pathseekerSize <= 1)
-        {
-            foreach (NavPointV2 neighbour in navPoint.neighbours)
-            {
-                if (neighbour != null && neighbour.overlapWithCollider == true)
-                {
-                    result = false;
-                }
-            }
-        }
-        else
-        {
-            foreach (NavPointV2 neighbour in navPoint.neighbours)
-            {
-                if (!EnoughRoomToGoThrough(neighbour, pathseekerSize - 2))
-                {
-                    result = false;
-                }
-            }
-        }
-        return result;
-
     }
     public static void CreateNavNet()
     {
@@ -214,7 +179,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
         }
         Debug.Log("counf of queuedNavPoints is " + queuedNavPoints.Count);
     }
-
     private static void SetObstacleProximityInNeighboursAndAddToTheQueue( NavPointV2 arg_navPoint, List<NavPointV2> arg_queuedNavPoints)
     {
         foreach(NavPointV2 neighbour in arg_navPoint.neighbours)
@@ -237,7 +201,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
             }
             else
             {
-
                 foreach (NavPointV2 neighbour in processedNavPoint.neighbours)
                 {
                     if (neighbour == null)
@@ -253,18 +216,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
             }
         }
     }
-
-    private static void CheckForOpenSpacesInNavNet()
-    {
-        foreach (NavPointV2 navPoint in allNavPoints)
-        {
-            if (navPoint.overlapWithCollider == false)
-            {
-                CheckForOpenSpacesAroundArg(navPoint);
-            }
-        }
-    }
-
     private static void CheckForExistingNeighbours(NavPointV2 nPoint)
     {
         for (int direction = 0; direction < 6; direction++)
@@ -275,51 +226,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
             }
         }
     }
-    private static void CheckForOpenSpacesAroundArg(NavPointV2 arg)
-    {
-        float distanceFromNavPoint = 0;
-        bool foundNearestCollision = false;
-        List<NavPointV2> navPointsSomewhatProcessed = new List<NavPointV2>();
-        navPointsSomewhatProcessed.Add(arg);
-        int processedNavPointId = -1;
-
-        while (!foundNearestCollision)
-        {
-            processedNavPointId++;
-            NavPointV2 processedNavPoint = navPointsSomewhatProcessed[processedNavPointId];
-
-            if (processedNavPoint.overlapWithCollider)
-            {
-                foundNearestCollision = true;
-                distanceFromNavPoint = (arg.position - processedNavPoint.position).magnitude;
-            }
-            else
-            {
-                foreach (NavPointV2 neighbour in processedNavPoint.neighbours)
-                {
-                    if (neighbour != null)
-                    {
-                        if (!navPointsSomewhatProcessed.Contains(neighbour))
-                        {
-                            navPointsSomewhatProcessed.Add(neighbour);
-                        }
-                    }
-                    else
-                    {
-                        foundNearestCollision = true;
-                        distanceFromNavPoint = (arg.position - processedNavPoint.position).magnitude;
-                    }
-                }
-            }
-        }
-        arg.distancetoNearestObject = distanceFromNavPoint - BetterNavNet.staticRef.distanceBetweenNavPoints;
-        if (arg.distancetoNearestObject < 0f) // most likely not the best solution in the world, but should do the trick
-        {
-            //Debug.LogError("t");
-            arg.distancetoNearestObject = 0.0001f;
-        }
-    }
-
     public static void CreateNavPointsAround(NavPointV2 nPoint)
     {
         nPoint.distanceFromCentre++;
@@ -339,7 +245,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
             }
         }
     }
-
     private static void CheckForCommonNeighbours(int direction, NavPointV2 callerNavPoint, NavPointV2 knownNeighbour)
     {
         NavPointV2 commonNeighbour = null;
@@ -356,7 +261,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
             callerNavPoint.neighbours[(direction + 5) % 6] = commonNeighbour;
         }
     }
-
     public static void CheckIfNavpointsOverlapWithColliders()
     {
         foreach (NavPointV2 npoint in allNavPoints)
@@ -377,7 +281,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
     }
     public static NavPointV2 FindNearestNavpoint(NavPointV2 arg_oldNearestNavPoint, Vector3 arg_position)
     {
-
         float distanceFromNearestNavPoint = 6666;
         if (arg_oldNearestNavPoint == null)
         {
@@ -415,8 +318,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
         return result;
     }
 }
-
-
 public class NavPointV2 : INavPoint
 {
     public Vector3 position;
