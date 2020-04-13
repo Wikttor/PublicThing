@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class Globals : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Material LineMaterial;
     void Start()
     {
-        
+        if(LnRendererBuffer.sList == null)
+        {
+            LnRendererBuffer.sList = new List<LnRendererBuffer>();
+            LnRendererBuffer.InitiateNew(LineMaterial);
+        }
+
+        //TestCreateLine();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void TestCreateLine()
+    {
+       // LnRendererBuffer.sList[0].DrawVector();
     }
 }
 
