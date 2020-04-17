@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
+    public float i_visualisationTime = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +19,7 @@ public class PlayerShooting : MonoBehaviour
         {
             RaycastHit hit;
             Physics.Raycast(this.transform.position + this.transform.forward, this.transform.forward, out hit, 666);
-            LnRendererBuffer.sList[0].DrawVector(this.transform.position, hit.point);
+            LnRendererBuffer.sList[0].DrawVector(i_visualisationTime, this.transform.position, hit.point);
         }
     }
 }

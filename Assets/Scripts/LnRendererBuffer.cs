@@ -25,7 +25,7 @@ public class LnRendererBuffer
         return sList.Count - 1;
     }
 
-    public void DrawVector(Vector3 arg_pointOne, Vector3 arg_pointTwo) 
+    public void DrawVector(float arg_time , Vector3 arg_pointOne, Vector3 arg_pointTwo) 
     {
         int i = 0;
         while (i < buffer.Count)
@@ -36,6 +36,6 @@ public class LnRendererBuffer
             }
             i++;
         }
-        buffer[i].DrawVector(1f, arg_pointOne, arg_pointTwo);
+        buffer[i].DrawVector(arg_time, arg_pointOne, arg_pointTwo);
     }
 }
