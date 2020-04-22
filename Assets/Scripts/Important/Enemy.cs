@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
+        if (!isAIEnabled && BetterNavNet.navNetCreated)
         {
             isAIEnabled = true;
             nextAItime = Time.time;
@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
             case EnemyBehaviourState.RunAway:
                 AIRunAway();
                 break;
-            case EnemyBehaviourState.Pursue:
+            case EnemyBehaviourState.Move:
                 AIPursue();
                 break;
         }
@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         if (path != null)
         {
             LineRenderingThing.staticRef.DrawPath(path);
-            behaviourState = EnemyBehaviourState.Pursue;//more like following the path, not pursuing
+            behaviourState = EnemyBehaviourState.Move;//more like following the path, not pursuing
         }
     }
     private void AIStartPursuing()
@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         if (path != null)
         {
             LineRenderingThing.staticRef.DrawPath(path);
-            behaviourState = EnemyBehaviourState.Pursue;
+            behaviourState = EnemyBehaviourState.Move;
         }
     }
     private void AIPursue()
@@ -183,4 +183,4 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
 }
 
 
-public enum EnemyBehaviourState { Default, RunAway, Hide, Attack, Pursue}
+public enum EnemyBehaviourState { Default, RunAway, Hide, Attack, Move}

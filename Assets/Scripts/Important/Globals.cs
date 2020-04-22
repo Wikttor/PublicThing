@@ -5,27 +5,8 @@ using UnityEngine;
 public class Globals : MonoBehaviour
 {
     public Material LineMaterial;
-    void Start()
-    {
-        if(LnRendererBuffer.sList == null)
-        {
-            LnRendererBuffer.sList = new List<LnRendererBuffer>();
-            LnRendererBuffer.InitiateNew(LineMaterial);
-        }
-
-        //TestCreateLine();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void TestCreateLine()
-    {
-       // LnRendererBuffer.sList[0].DrawVector();
-    }
+    private float waitBeforeInitializingTime = 1f;
+    private bool initialized = false;
 }
 
 

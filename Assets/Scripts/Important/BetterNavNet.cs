@@ -10,6 +10,8 @@ public class BetterNavNet : MonoBehaviour, INavNet
 
     [SerializeField] int radius = 20;
 
+    public static bool navNetCreated = false;
+
     public static List<NavPointV2> allNavPoints = new List<NavPointV2>();
     private static Vector3[] relativeNavPointPositions = new Vector3[6];
 
@@ -23,6 +25,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
             staticRef = this;
         }
         SetRelativePositionVectors();
+        CreateNavNet();
     }
     private void SetRelativePositionVectors()
     {
@@ -165,6 +168,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
         }
         CheckIfNavpointsOverlapWithColliders();
         ImprovedCheckingForOpenSpaces();
+        navNetCreated = true;
     }
 
     private static void ImprovedCheckingForOpenSpaces()
@@ -329,7 +333,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
                 {
                     if (Physics.Raycast(neighbour.position, arg_observerPosition - neighbour.position, (arg_observerPosition - neighbour.position).magnitude, (int)Layers.Obstacles) )
                     {
-                        Debug.Log("TUTAJTUTAJTUTAJTUTAJ");
+                        Debug.Log("TUTAJTUTAJTUTAJTUTAJ");  
                         result = neighbour;
                     }
                     else
@@ -376,7 +380,5 @@ public class NavPointV2 : INavPoint
         neighbours = new NavPointV2[6];
         overlapWithCollider = false;
         distanceFromCentre = argDistance;
-        ;
     }
-
 }

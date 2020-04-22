@@ -6,23 +6,33 @@ public class LnRendererBuffer
 {
     public static List<LnRendererBuffer> sList;
     private List<LnRendererHandler> buffer;
+    private static GameObject commonParent;
+    private Material material;
 
 
-    public static int InitiateNew(Material arg_material)
+    public LnRendererBuffer(Material arg_material)
     {
+        if (commonParent == null)
+        {
+            commonParent = new GameObject("BufferedLineRenderers");
+        }
         if(sList == null)
         {
             sList = new List<LnRendererBuffer>();
         }
-        sList.Add(new LnRendererBuffer());
-        sList[0].buffer = new List<LnRendererHandler>();
-        for (int i = 0; i < 10; i++)
-        {
-            LnRendererHandler newHandler = (new GameObject("LnRenderer")).AddComponent<LnRendererHandler>();
-            newHandler.Initiate(arg_material);
-            sList[0].buffer.Add(newHandler);
-            }
-        return sList.Count - 1;
+        sList.Add(this);
+        sList[sList.Count - 1].material = arg_material;
+        sList[sList.Count - 1].buffer = new List<LnRendererHandler>();
+        sList[sList.Count - 1].AddNewRenderer();
+    }
+
+    private int AddNewRenderer()
+    {
+        LnRendererHandler newHandler = (new GameObject("LnRenderer")).AddComponent<LnRendererHandler>();
+        newHandler.transform.parent = commonParent.transform;
+        newHandler.Initiate(material);
+        this.buffer.Add(newHandler);
+        return this.buffer.Count;
     }
 
     public void DrawVector(float arg_time , Vector3 arg_pointOne, Vector3 arg_pointTwo) 
@@ -35,6 +45,10 @@ public class LnRendererBuffer
                 break;
             }
             i++;
+        }
+        if(i >= buffer.Count)
+        {
+            AddNewRenderer();
         }
         buffer[i].DrawVector(arg_time, arg_pointOne, arg_pointTwo);
     }
