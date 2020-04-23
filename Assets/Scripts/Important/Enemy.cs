@@ -14,7 +14,6 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
     public float i_pursuingDistance = 1f;
     public int i_searchDistance = 80;
 
-
     public List<INavPoint> path;
     public int pathElementIndex;
     public Vector3 velocity;
@@ -23,10 +22,14 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
     float nextAItime;
     public float i_AICheckDelay = 1f;
     public float i_AICheckDelayDeviationAmount = 0.3f;
+
+    LnRendererBuffer pathvisualisation;
+    public  Material i_pathMaterial;
     void Start()
     {
-            rBody = this.transform.GetComponent<Rigidbody>();
-            behaviourState = EnemyBehaviourState.Default;
+        rBody = this.transform.GetComponent<Rigidbody>();
+        behaviourState = EnemyBehaviourState.Default;
+        pathvisualisation = new LnRendererBuffer(i_pathMaterial);    
     }
     void Update()
     {
@@ -35,7 +38,6 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
             isAIEnabled = true;
             nextAItime = Time.time;
         }
-        nearestNavPoint = BetterNavNet.FindNearestNavpoint(nearestNavPoint, this.transform.position);
         if (isAIEnabled)
         {
             AIScript();
@@ -43,6 +45,8 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
     }
     private void AIScript()
     {
+        nearestNavPoint = BetterNavNet.FindNearestNavpoint(nearestNavPoint, this.transform.position);
+
         switch (behaviourState)
         {
             case EnemyBehaviourState.Default:
@@ -57,22 +61,20 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         }
     }
     private void AIDefault()
-    {
-        velocity = new Vector3(0f, 0f, 0f);
-        rBody.velocity = velocity;
+    { 
+        rBody.velocity = new Vector3(0f, 0f, 0f);
         if (Time.time < nextAItime)
         {
             return;
         }
-        if (isAIEnabled && WithinSightOfPlayer())
+
+        if (WithinSightOfPlayer())
         {
             //AIStartPursuing();
-
             AIStartHiding();
         }
         nextAItime += Random.Range( 1f - i_AICheckDelayDeviationAmount, 1 + i_AICheckDelayDeviationAmount) * i_AICheckDelay;
     }
-
 
     private void AIStartHiding()
     {
@@ -84,8 +86,9 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         pathElementIndex = 0;
         if (path != null)
         {
-            LineRenderingThing.staticRef.DrawPath(path);
-            behaviourState = EnemyBehaviourState.Move;//more like following the path, not pursuing
+            pathvisualisation.DrawPath(5f, path);
+            //LineRenderingThing.staticRef.DrawPath(path);
+            behaviourState = EnemyBehaviourState.Move;
         }
     }
     private void AIStartPursuing()

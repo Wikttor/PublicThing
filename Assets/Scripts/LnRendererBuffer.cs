@@ -37,6 +37,16 @@ public class LnRendererBuffer
 
     public void DrawVector(float arg_time , Vector3 arg_pointOne, Vector3 arg_pointTwo) 
     {
+        GetBufferedRenderer().DrawVector(arg_time, arg_pointOne, arg_pointTwo);
+    }
+
+    public void DrawPath(float arg_time, List<INavPoint> arg_path)
+    {
+        GetBufferedRenderer().DrawPath(arg_time, arg_path);
+    }
+
+    private LnRendererHandler GetBufferedRenderer()
+    {
         int i = 0;
         while (i < buffer.Count)
         {
@@ -46,10 +56,10 @@ public class LnRendererBuffer
             }
             i++;
         }
-        if(i >= buffer.Count)
+        if (i >= buffer.Count)
         {
             AddNewRenderer();
         }
-        buffer[i].DrawVector(arg_time, arg_pointOne, arg_pointTwo);
+        return buffer[i];
     }
 }

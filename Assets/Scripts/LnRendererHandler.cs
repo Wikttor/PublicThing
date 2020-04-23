@@ -38,8 +38,19 @@ public class LnRendererHandler : MonoBehaviour
     public void DrawVector( float arg_time, Vector3 arg_pointOne, Vector3 arg_pointTwo)
     {
         this.gameObject.SetActive(true);
-        this.deactivateTime = Time.time + 1f;
+        this.deactivateTime = Time.time + arg_time;
+        lRend.positionCount = 2;
         lRend.SetPosition(0, arg_pointOne);
         lRend.SetPosition(1, arg_pointTwo);
+    }
+    public void DrawPath(float arg_time, List<INavPoint> arg_path)
+    {
+        this.gameObject.SetActive(true);
+        this.deactivateTime = Time.time + arg_time;
+        lRend.positionCount = arg_path.Count;
+        for (int i = 0; i < arg_path.Count; i++)
+        {
+            lRend.SetPosition(i, arg_path[i].GetPosition());
+        }
     }
 }

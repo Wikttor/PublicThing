@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1436067907300507631}
   - component: {fileID: 1436067907300507628}
   - component: {fileID: 1436067907300507629}
-  - component: {fileID: 1436067907300507155}
   - component: {fileID: 1436067907300507154}
+  - component: {fileID: 1436067907300507155}
   - component: {fileID: -5885455273542798841}
   - component: {fileID: 777664635849074001}
   m_Layer: 0
@@ -79,7 +79,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ecdc673e6f0bd02419530f84dcc51869, type: 2}
+  - {fileID: 2100000, guid: b253ad48c40ae3b4b8c8a4967f4e2f9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,28 +100,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &1436067907300507155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1436067907300507152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffe2a20d1393adc4ca1ce46b5f145a6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  behaviourState: 0
-  i_movementSpeed: 4
-  i_size: 0
-  i_pursuingDistance: 1
-  i_searchDistance: 80
-  pathElementIndex: 0
-  velocity: {x: 0, y: 0, z: 0}
-  isAIEnabled: 0
-  i_AICheckDelay: 1
-  i_AICheckDelayDeviationAmount: 0.3
 --- !u!136 &1436067907300507154
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -136,6 +114,29 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1436067907300507155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436067907300507152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffe2a20d1393adc4ca1ce46b5f145a6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviourState: 0
+  i_movementSpeed: 6.7
+  i_size: 4
+  i_pursuingDistance: 1
+  i_searchDistance: 80
+  pathElementIndex: 0
+  velocity: {x: 0, y: 0, z: 0}
+  isAIEnabled: 0
+  i_AICheckDelay: 1
+  i_AICheckDelayDeviationAmount: 0.3
+  i_pathMaterial: {fileID: 2100000, guid: df8272d8b9bd6204d8a839463b2c1149, type: 2}
 --- !u!114 &-5885455273542798841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c941d8d43dca96f41b80a2699e189907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  i_maxValue: 100
+  i_valueChangePeriod: 0.4
 --- !u!114 &777664635849074001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,3 +163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bac6d0c960746746b84ad6da194be5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  i_frontMaterial: {fileID: 2100000, guid: f83f91ce4e2e75a4dbfbf0fedf022f9b, type: 2}
+  i_backMaterial: {fileID: 2100000, guid: 6a2160c36b081bf45ae49976453ca75b, type: 2}
+  i_circleWidth: 0.1
+  i_verticleCount: 100
+  i_innerCircleSize: 1.3
+  i_cicrleseparation: 0
+  i_valueHolder: {fileID: -5885455273542798841}
+  i_backYPosition: 0.06
+  i_frontYPosition: 0.1
