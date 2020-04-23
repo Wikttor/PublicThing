@@ -27,7 +27,7 @@ public class PlayerVision : MonoBehaviour
     {
         foreach (NavPointV2 point in BetterNavNet.allNavPoints)
         {
-            if (!point.overlapWithCollider && Physics.Raycast(transform.position, point.position - transform.position, (int)Layers.Obstacles))
+            if (!point.overlapWithCollider )//&& Physics.Raycast(transform.position, point.position - transform.position, (int)Layers.Obstacles))
             {
                 nPointVisionDict.Add(point, 0);
                 waitingForProcessing.Add(point);
@@ -51,6 +51,7 @@ public class PlayerVision : MonoBehaviour
                 {
                     firstOutOfSightPoints.Add(point);
                 }
+                i++;
             }
 
         }
