@@ -12,14 +12,14 @@ public class DisplayValueCircle : MonoBehaviour
     public float i_innerCircleSize = 1.3f;
     public float i_cicrleseparation = 0;
     public Component i_valueHolder;
-    public IDisplayableValue value;
+    public IDisplayableFiniteValue value;
     private Vector3[] positions;
     public float i_backYPosition = 0f;
     public float i_frontYPosition = 0.1f;
     // Start is called before the first frame update
     void Start()
     {
-        value = i_valueHolder as IDisplayableValue;
+        value = i_valueHolder as IDisplayableFiniteValue;
         frontRenderer = Initiate(i_frontMaterial, i_circleWidth);
         backRenderer = Initiate(i_backMaterial, i_circleWidth);
         backRenderer.positionCount = i_verticleCount;
@@ -38,7 +38,7 @@ public class DisplayValueCircle : MonoBehaviour
             DisplayValue(value);
     }
 
-    private void DisplayValue( IDisplayableValue arg_value)
+    private void DisplayValue( IDisplayableFiniteValue arg_value)
     {
         frontRenderer.gameObject.transform.position = this.transform.position;
         backRenderer.gameObject.transform.position = this.transform.position;

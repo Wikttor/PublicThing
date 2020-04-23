@@ -86,8 +86,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         pathElementIndex = 0;
         if (path != null)
         {
-            pathvisualisation.DrawPath(5f, path);
-            //LineRenderingThing.staticRef.DrawPath(path);
+            pathvisualisation.DrawPath(2f, path);
             behaviourState = EnemyBehaviourState.Move;
         }
     }

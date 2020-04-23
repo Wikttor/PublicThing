@@ -333,7 +333,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
                 {
                     if (Physics.Raycast(neighbour.position, arg_observerPosition - neighbour.position, (arg_observerPosition - neighbour.position).magnitude, (int)Layers.Obstacles) )
                     {
-                        Debug.Log("TUTAJTUTAJTUTAJTUTAJ");  
                         result = neighbour;
                     }
                     else

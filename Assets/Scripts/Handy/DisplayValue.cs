@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 /*
  *         GUI.skin.box.normal.background = background; ///WHY??????
            GUI.Box(new Rect(10, 10, 500, 500), GUIContent.none);*/
@@ -16,7 +14,7 @@ public class DisplayValue : MonoBehaviour
     [SerializeField] int yOffset = 100;
     [SerializeField] Color backgroundColor;
     [SerializeField] Color frontColor;
-    [SerializeField]public List<IDisplayableValue> listOfValuesToDisplay;
+    [SerializeField]public List<IDisplayableFiniteValue> listOfValuesToDisplay;
 
     Texture2D background;
     Texture2D front;
@@ -25,7 +23,7 @@ public class DisplayValue : MonoBehaviour
     private void Start()
     {
         DoTheSingletonThing();
-        listOfValuesToDisplay = new List<IDisplayableValue>();
+        listOfValuesToDisplay = new List<IDisplayableFiniteValue>();
 
         background = new Texture2D(1, 1);
         background.SetPixel(0, 0, Color.red);
@@ -47,11 +45,10 @@ public class DisplayValue : MonoBehaviour
         }
     }
         
-
     private void OnGUI()
     {
         int elementDisplayedId = 0;
-        foreach ( IDisplayableValue value in listOfValuesToDisplay)
+        foreach ( IDisplayableFiniteValue value in listOfValuesToDisplay)
         {
             DrawRect(new Rect(xOffset, yOffset + elementDisplayedId*(width + separation), length, width), background);
             DrawRect(new Rect(xOffset, yOffset + elementDisplayedId * (width + separation), value.GetCurrentValue() / value.GetMaxValue() * length, width), front);
@@ -60,7 +57,7 @@ public class DisplayValue : MonoBehaviour
 
     }
 
-    public static void Add(IDisplayableValue newValue)
+    public static void Add(IDisplayableFiniteValue newValue)
     {
         staticRef.listOfValuesToDisplay.Add(newValue);
     }
@@ -73,8 +70,7 @@ public class DisplayValue : MonoBehaviour
 
 }
 
-
-public interface IDisplayableValue
+public interface IDisplayableFiniteValue
 {
     float GetMaxValue();
     float GetCurrentValue();

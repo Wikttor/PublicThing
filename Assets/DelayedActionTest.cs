@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DelayedActionTest : MonoBehaviour, IDisplayableValue
+public class DelayedActionTest : MonoBehaviour, IDisplayableFiniteValue
 {
 
     public float i_maxValue = 100;

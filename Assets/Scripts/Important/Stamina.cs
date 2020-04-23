@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stamina : MonoBehaviour, IDisplayableValue
+public class Stamina : MonoBehaviour, IDisplayableFiniteValue
 {
     [SerializeField] float MaxValue = 100;
     [SerializeField] float CurrentValue = 100;
