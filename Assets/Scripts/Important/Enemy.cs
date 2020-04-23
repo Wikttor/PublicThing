@@ -40,10 +40,10 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         }
         if (isAIEnabled)
         {
-            AIScript();
+            AIMain();
         }
     }
-    private void AIScript()
+    private void AIMain()
     {
         nearestNavPoint = BetterNavNet.FindNearestNavpoint(nearestNavPoint, this.transform.position);
 
