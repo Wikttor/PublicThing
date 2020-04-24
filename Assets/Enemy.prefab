@@ -30,7 +30,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1436067907300507152}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.49, y: 0, z: 2.07}
   m_LocalScale: {x: 1, y: 0.82, z: 1}
   m_Children: []
@@ -134,9 +134,10 @@ MonoBehaviour:
   pathElementIndex: 0
   velocity: {x: 0, y: 0, z: 0}
   isAIEnabled: 0
-  i_AICheckDelay: 1
-  i_AICheckDelayDeviationAmount: 0.3
+  i_AICheckDelay: 0.5
+  i_AICheckDelayDeviationAmount: 0.2
   i_pathMaterial: {fileID: 2100000, guid: df8272d8b9bd6204d8a839463b2c1149, type: 2}
+  nextWaypointProximityMagicNumber: 1.2
 --- !u!114 &-5885455273542798841
 MonoBehaviour:
   m_ObjectHideFlags: 0

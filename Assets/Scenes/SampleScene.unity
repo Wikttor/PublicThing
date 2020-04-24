@@ -444,7 +444,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143053458}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6cda2295a3088242be38c60d3ebe200, type: 3}
   m_Name: 
@@ -2009,7 +2009,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootPosition: {x: 0, y: 0, z: 0}
   distanceBetweenNavPoints: 0.3
-  radius: 100
+  radius: 130
 --- !u!1 &1687453498
 GameObject:
   m_ObjectHideFlags: 0

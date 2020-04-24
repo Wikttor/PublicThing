@@ -25,6 +25,8 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
 
     LnRendererBuffer pathvisualisation;
     public  Material i_pathMaterial;
+
+    public float nextWaypointProximityMagicNumber = 1.2f;
     void Start()
     {
         rBody = this.transform.GetComponent<Rigidbody>();
@@ -124,25 +126,25 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
         bool nothingBlockingWayToTheNextWaypoint = true;
         while (nothingBlockingWayToTheNextWaypoint && pathElementIndex + 1 < path.Count)
         {
+            float distanceToCheckedPoint = (transform.position - path[pathElementIndex + 1].GetPosition()).magnitude;
             Vector3 rayStart = this.transform.position;
             Vector3 rayDirection = path[pathElementIndex + 1].GetPosition() - this.transform.position;
-            float rayDistance = (path[pathElementIndex + 1].GetPosition() - this.transform.position).magnitude;
             Vector3 offset = (Quaternion.Euler(0f, 90f, 0f) * rayDirection.normalized) * arg_size * BetterNavNet.staticRef.distanceBetweenNavPoints;
 
             if (
-                Physics.Raycast(rayStart, rayDirection, rayDistance, (int)Layers.Obstacles) ||
+                Physics.Raycast(rayStart, rayDirection, distanceToCheckedPoint, (int)Layers.Obstacles) ||
                     (
                     arg_size != 0 &&
                         (
-                        Physics.Raycast(rayStart + offset, rayDirection, rayDistance, (int)Layers.Obstacles) ||
-                        Physics.Raycast(rayStart - offset, rayDirection, rayDistance, (int)Layers.Obstacles)
+                        Physics.Raycast(rayStart + offset, rayDirection, distanceToCheckedPoint, (int)Layers.Obstacles) ||
+                        Physics.Raycast(rayStart - offset, rayDirection, distanceToCheckedPoint, (int)Layers.Obstacles)
                         )
                     )
                 )
             {
                 nothingBlockingWayToTheNextWaypoint = false;
             }              
-            if (nothingBlockingWayToTheNextWaypoint)
+            if (nothingBlockingWayToTheNextWaypoint || distanceToCheckedPoint < nextWaypointProximityMagicNumber * BetterNavNet.staticRef.distanceBetweenNavPoints)
             {
                 pathElementIndex++;
             }
