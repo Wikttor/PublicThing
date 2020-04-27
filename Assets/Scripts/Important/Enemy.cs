@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
     }
     void Update()
     {
-        if (!isAIEnabled && BetterNavNet.navNetCreated)
+        if (!isAIEnabled && BetterNavNet.navNetCreated && PlayerVision.initialized )
         {
             isAIEnabled = true;
             nextAItime = Time.time;
@@ -129,7 +129,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
             float distanceToCheckedPoint = (transform.position - path[pathElementIndex + 1].GetPosition()).magnitude;
             Vector3 rayStart = this.transform.position;
             Vector3 rayDirection = path[pathElementIndex + 1].GetPosition() - this.transform.position;
-            Vector3 offset = (Quaternion.Euler(0f, 90f, 0f) * rayDirection.normalized) * arg_size * BetterNavNet.staticRef.distanceBetweenNavPoints;
+            Vector3 offset = (Quaternion.Euler(0f, 90f, 0f) * rayDirection.normalized) * arg_size * BetterNavNet.sRef.distanceBetweenNavPoints;
 
             if (
                 Physics.Raycast(rayStart, rayDirection, distanceToCheckedPoint, (int)Layers.Obstacles) ||
@@ -144,7 +144,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
             {
                 nothingBlockingWayToTheNextWaypoint = false;
             }              
-            if (nothingBlockingWayToTheNextWaypoint || distanceToCheckedPoint < nextWaypointProximityMagicNumber * BetterNavNet.staticRef.distanceBetweenNavPoints)
+            if (nothingBlockingWayToTheNextWaypoint || distanceToCheckedPoint < nextWaypointProximityMagicNumber * BetterNavNet.sRef.distanceBetweenNavPoints)
             {
                 pathElementIndex++;
             }

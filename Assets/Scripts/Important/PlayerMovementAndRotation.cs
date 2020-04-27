@@ -42,7 +42,7 @@ public class PlayerMovementAndRotation : MonoBehaviour, IMovementAndRotation, IT
         {
             myCamera = CameraScript.staticInstance.GetComponent<Camera>();
         }
-        if(BetterNavNet.allNavPoints.Count > 0) 
+        if(BetterNavNet.navNetCreated) 
         {
             nearestNavPoint = BetterNavNet.FindNearestNavpoint(nearestNavPoint, transform.position);
         }

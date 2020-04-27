@@ -6,7 +6,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
 {
     [SerializeField] Vector3 rootPosition;
     [SerializeField] public float distanceBetweenNavPoints = 1f;
-    [SerializeField] public static BetterNavNet staticRef;
+    [SerializeField] public static BetterNavNet sRef;
 
     [SerializeField] int radius = 20;
 
@@ -20,9 +20,9 @@ public class BetterNavNet : MonoBehaviour, INavNet
 
     void Start()
     {
-        if (!staticRef)
+        if (!sRef)
         {
-            staticRef = this;
+            sRef = this;
         }
         SetRelativePositionVectors();
         CreateNavNet();
@@ -152,9 +152,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
     public static void CreateNavNet()
     {
         NavPointV2 processedNavPoint = new NavPointV2();
-        processedNavPoint.position = staticRef.rootPosition;
-        //processedNavPoint.neighbours = new NavPointV2[6];
-        //processedNavPoint.overlapWithCollider = false;
+        processedNavPoint.position = sRef.rootPosition;
         processedNavPoint.distanceFromCentre = 0;
         allNavPoints.Add(processedNavPoint);
         int proccessedNavPointId = 0;
@@ -169,6 +167,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
         CheckIfNavpointsOverlapWithColliders();
         ImprovedCheckingForOpenSpaces();
         navNetCreated = true;
+        Debug.Log("total navPoint count: " + allNavPoints.Count);
     }
 
     private static void ImprovedCheckingForOpenSpaces()
@@ -181,7 +180,6 @@ public class BetterNavNet : MonoBehaviour, INavNet
             SetObstacleProximityInNeighboursAndAddToTheQueue(queuedNavPoints[processedNavPointIndex], queuedNavPoints);
             processedNavPointIndex++;
         }
-        Debug.Log("counf of queuedNavPoints is " + queuedNavPoints.Count);
     }
     private static void SetObstacleProximityInNeighboursAndAddToTheQueue( NavPointV2 arg_navPoint, List<NavPointV2> arg_queuedNavPoints)
     {
@@ -233,7 +231,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
     public static void CreateNavPointsAround(NavPointV2 nPoint)
     {
         nPoint.distanceFromCentre++;
-        if (nPoint.distanceFromCentre <= staticRef.radius)
+        if (nPoint.distanceFromCentre <= sRef.radius)
         {
             for (int direction = 0; direction < 6; direction++)
             {
@@ -274,7 +272,7 @@ public class BetterNavNet : MonoBehaviour, INavNet
                 for (int direction = 0; direction < 6; direction++)
                 {
                     if (npoint.neighbours[direction] != null &&
-                        Physics.Raycast( npoint.GetPosition(), relativeNavPointPositions[direction], staticRef.distanceBetweenNavPoints, (int)Layers.Obstacles)
+                        Physics.Raycast( npoint.GetPosition(), relativeNavPointPositions[direction], sRef.distanceBetweenNavPoints, (int)Layers.Obstacles)
                         )
                     {
                         npoint.neighbours[direction].overlapWithCollider = true;
@@ -346,38 +344,4 @@ public class BetterNavNet : MonoBehaviour, INavNet
         return result;
     }
 }
-public class NavPointV2 : INavPoint
-{
-    public Vector3 position;
-    public NavPointV2[] neighbours;
-    public bool overlapWithCollider;
-    public float distancetoNearestObject = 0;
-    public int obstacleProximity;
-    public int distanceFromCentre;
 
-    public Vector3 GetPosition()
-    {
-        return position;
-    }
-    public bool OverlapWithCollider()
-    {
-        return overlapWithCollider;
-    }
-
-    public NavPointV2()
-    {
-        obstacleProximity = -1;
-        position = new Vector3();
-        neighbours = new NavPointV2[6];
-        overlapWithCollider = false;
-        distanceFromCentre = 0;
-    }
-    public NavPointV2(Vector3 argPosition, int argDistance)
-    {
-        obstacleProximity = -1;
-        position = argPosition;
-        neighbours = new NavPointV2[6];
-        overlapWithCollider = false;
-        distanceFromCentre = argDistance;
-    }
-}
