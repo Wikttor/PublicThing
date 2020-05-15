@@ -35,7 +35,7 @@ public class Enemy : MonoBehaviour, ITrackableNearestNavPoint
     }
     void Update()
     {
-        if (!isAIEnabled && BetterNavNet.navNetCreated && PlayerVision.initialized )
+        if (!isAIEnabled && BetterNavNet.navNetCreated /*&& PlayerVision.initialized */)
         {
             isAIEnabled = true;
             nextAItime = Time.time;

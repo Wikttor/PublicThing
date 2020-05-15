@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 143053467}
   - component: {fileID: 143053468}
   - component: {fileID: 143053469}
+  - component: {fileID: 143053465}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -484,6 +485,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &143053465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143053458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0362ca136609374aac7b69b6fb34d51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vision: []
+  resolution: 100
 --- !u!114 &143053467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,7 +540,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143053458}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d6cda2295a3088242be38c60d3ebe200, type: 3}
   m_Name: 
@@ -534,8 +549,6 @@ MonoBehaviour:
     type: 3}
   pointCount: 0
   nextCount: 0
-  i_visionRange: 100
-  i_maxTrackedDistance: 15
 --- !u!1 &194598954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1653,7 +1666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1350214288
 Transform:
   m_ObjectHideFlags: 0
@@ -2098,7 +2111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootPosition: {x: 0, y: 0, z: 0}
   distanceBetweenNavPoints: 0.3
-  radius: 50
+  radius: 200
 --- !u!1 &1687453498
 GameObject:
   m_ObjectHideFlags: 0

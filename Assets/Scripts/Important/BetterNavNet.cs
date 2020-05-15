@@ -25,7 +25,16 @@ public class BetterNavNet : MonoBehaviour, INavNet
             sRef = this;
         }
         SetRelativePositionVectors();
-        CreateNavNet();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            Debug.Log("creating");
+            CreateNavNet();
+        }
+
     }
     private void SetRelativePositionVectors()
     {
